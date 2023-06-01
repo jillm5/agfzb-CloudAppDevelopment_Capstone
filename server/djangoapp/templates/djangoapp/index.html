@@ -36,6 +36,24 @@
         .navbar a:hover {
           background-color: #ddd;
         }
+        .login-button {
+      padding: 8px 12px;
+      background-color: blue; /* Set the background color to blue */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .custom-button {
+  padding: 5px 10px;
+  border: 1px solid;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.custom-button-sm {
+  font-size: 18px;
+  padding: 3px 8px;
+}
       </style>
     </head>
     <body>
@@ -43,9 +61,31 @@
         <a href="#">Main</a>
         <a href="about">About</a>
         <a href="contact">Contact Us</a>
+        
+        
+        {% if user.is_authenticated %}
+        <div class="ml-auto">
+            <a class="custom-button-sm">Logged in as {{user.username}}</a>
+            <a class="custom-button" href="{% url 'djangoapp:logout' %}">Logout</a>
+        </div> 
+        {% else %}
+        <form action="{% url 'djangoapp:login' %}"  method="post" class="ml-auto">
+            {% csrf_token %}<!--Important do not touch-->
+            <input class="" type="text" id="username" name="username" placeholder="UserName:">
+            <input type="password" id="psw" name="psw" placeholder="Password:">
+            <input class="login-button" type="submit" value="Login">
+            <input class="custom-button-sm" type="submit" href="{% url 'djangoapp:registration' %}" value="Sign Up">
+        </form>
+        {% endif %}
+            
+        
+          
+
+        
       </nav>
     </body>
-    <!--Add a dealer table here -->
+
+      <!--Add a dealer table here -->
 
     <h2><center>Dealer's Table</center></h2>
     <table style="width:50%">
