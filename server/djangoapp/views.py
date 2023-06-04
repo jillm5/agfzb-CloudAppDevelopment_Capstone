@@ -116,7 +116,15 @@ def get_dealerships(request):
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
-    return HttpResponse(dealer_id)
+    if request.method == "GET":
+        url_r = f"https://us-south.functions.appdomain.cloud/api/v1/web/f4714f52-5ce8-4f77-8710-2e91ad5d2f13/dealership-package/get-review/review?id={dealer_id}"
+        url_ds = f"https://us-south.functions.appdomain.cloud/api/v1/web/f4714f52-5ce8-4f77-8710-2e91ad5d2f13/dealership-package/get-dealership/dealership?id={dealer_id}"
+        # Get dealers from the URL
+        context = {
+            "dealer": get_dealers_from_cf(url_ds)[0],
+            "reviews": get_dealer_reviews_from_cf(url_r, dealer_id),
+        }
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 
 # Create a `add_review` view to submit a review
